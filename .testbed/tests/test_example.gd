@@ -1,33 +1,44 @@
 extends GutTest
 
-# ------------------------------------------------------------------------------
-# Example Unit Test
-# ------------------------------------------------------------------------------
-# This script demonstrates the basic structure of a GUT test file.
-# Run this via the GUT panel in the Editor or via Command Line.
+const ROOT_PLUGIN_CFG := "res://../plugin.cfg"
+const TESTBED_MANIFEST := "res://addons.jsonc"
 
-func before_all():
-	# Runs once before all tests in this script.
-	# Use this to setup global resources or load heavy assets.
-	gut.p("Starting Example Tests...")
+func test_plugin_metadata_matches_pc_first_v1_shell_truth() -> void:
+	var config := ConfigFile.new()
+	var load_result := config.load(ProjectSettings.globalize_path(ROOT_PLUGIN_CFG))
+	assert_eq(load_result, OK, "plugin.cfg should load from the repo root")
 
-func before_each():
-	# Runs before each test function.
-	# Use this to reset state between tests.
-	pass
+	assert_eq(
+		config.get_value("plugin", "name"),
+		"AeroBeat UI Shell - Desktop Community Edition",
+		"Plugin name should stay stable for the desktop community shell"
+	)
 
-func after_each():
-	# Runs after each test function.
-	# Use this to clean up nodes (queue_free).
-	pass
+	var description := String(config.get_value("plugin", "description", ""))
+	assert_string_contains(description, "PC-first community UI shell", "Plugin description should state the desktop shell stance")
+	assert_string_contains(description, "camera-based Boxing and Flow", "Plugin description should reflect the locked v1 gameplay slice")
 
-func after_all():
-	# Runs once after all tests in this script.
-	gut.p("Finished Example Tests.")
+func test_testbed_manifest_matches_shell_dependency_contract() -> void:
+	var file := FileAccess.open(ProjectSettings.globalize_path(TESTBED_MANIFEST), FileAccess.READ)
+	assert_not_null(file, "addons.jsonc should exist in the testbed")
+	if file == null:
+		return
 
-func test_sanity_check():
-	assert_eq(1, 1, "Math should still work")
+	var stripped_lines: Array[String] = []
+	for line in file.get_as_text().split("\n"):
+		var trimmed := line.strip_edges()
+		if trimmed.begins_with("//"):
+			continue
+		stripped_lines.append(line)
 
-func test_string_equality():
-	var project_name = "AeroBeat"
-	assert_eq(project_name, "AeroBeat", "Strings should match")
+	var manifest = JSON.parse_string("\n".join(stripped_lines))
+	assert_typeof(manifest, TYPE_DICTIONARY, "Manifest should parse as a dictionary")
+	if typeof(manifest) != TYPE_DICTIONARY:
+		return
+
+	var addons = manifest.get("addons", {})
+	assert_typeof(addons, TYPE_DICTIONARY, "Manifest should define an addons dictionary")
+	assert_true(addons.has("aerobeat-ui-core"), "Desktop shell manifest should include aerobeat-ui-core")
+	assert_true(addons.has("aerobeat-ui-kit-community"), "Desktop shell manifest should include aerobeat-ui-kit-community")
+	assert_true(addons.has("gut"), "Desktop shell manifest should include gut for repo-local tests")
+	assert_false(addons.has("aerobeat-core"), "Legacy aerobeat-core should not remain in the desktop shell manifest")

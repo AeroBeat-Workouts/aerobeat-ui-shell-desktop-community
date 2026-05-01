@@ -1,15 +1,23 @@
 # AeroBeat UI Shell - Community Edition - Desktop
 
-This is the community desktop **UI Shell** for the AeroBeat platform.
+This repo is the active near-term **desktop community UI shell** for AeroBeat v1.
+
+It should be read against the locked product direction from `aerobeat-docs`:
+
+- **Primary release target:** PC community edition
+- **Official v1 gameplay features:** Boxing and Flow
+- **Official v1 gameplay input:** camera only
+- **Future platform work:** mobile, web, and XR remain follow-on shells rather than equal-status v1 targets
 
 ## 📋 Repository Details
 
-*   **Type:** UI Shell
-*   **License:** **GNU GPLv3** (Strict Copyleft)
-*   **Dependencies:**
-    *   `aerobeat-ui-core` (Required UI logic contract)
-    *   `aerobeat-ui-kit-community` (Pinned visual layer)
-    *   Additional lane/core repos only when the shell actually consumes them
+- **Type:** UI Shell
+- **Platform stance:** desktop / PC-first community shell
+- **License:** **GNU GPLv3** (Strict Copyleft)
+- **Dependency contract:**
+  - `aerobeat-ui-core` — required shared UI logic contract
+  - `aerobeat-ui-kit-community` — pinned community visual layer
+  - additional lane repos only when this shell actually consumes them
 
 ## GodotEnv development flow
 
@@ -32,7 +40,7 @@ cd .testbed
 godotenv addons install
 ```
 
-That restores this repo's current dev/test manifest into `.testbed/addons/`. Canonically, UI shell repos should describe themselves around `aerobeat-ui-core` plus the concrete UI kit and any other lane repos the shell actually consumes.
+That restores this repo's current dev/test manifest into `.testbed/addons/`. Canonically, the desktop shell manifest should stay narrow: shared UI logic, the community UI kit, and test-only tooling.
 
 ### Open the workbench
 
@@ -66,7 +74,7 @@ godot --headless --path .testbed --script addons/gut/gut_cmdln.gd \
 ### Validation notes
 
 - `.testbed/addons.jsonc` is the committed dev/test dependency contract.
-- The current manifest still pins the transition-era `aerobeat-core` package key alongside `aerobeat-ui-core` and `aerobeat-ui-kit-community`. Treat that old core pin as bootstrap-state drift rather than the canonical lane model.
-- Canonical shared dependency language for UI shell repos is `aerobeat-ui-core` plus the concrete UI kit and any additional lane repos the shell actually consumes.
-- Repo-local unit tests live under `.testbed/tests/`; this repo's current package payload is rooted at `/`, so the workbench does not ship a `.testbed/src` bridge for this subset.
+- The canonical manifest for this shell is `aerobeat-ui-core` + `aerobeat-ui-kit-community` + `gut`.
+- Mobile, web, and XR shells may continue to exist as future platform paths, but this repo is the current PC-first community shell.
+- Repo-local unit tests live under `.testbed/tests/` and currently validate repo metadata plus the manifest contract.
 - The current package shape is consumed from the repo root (`subfolder: "/"`) for downstream installs.
