@@ -85,7 +85,7 @@ The audit found transition-era dependency drift in the committed `.testbed/addon
 - Result: 2/2 GUT tests passed.
 
 **Commits:**
-- `838569d` - Align desktop shell with AeroBeat v1 downscope
+- `e18cf13` - Align desktop shell with AeroBeat v1 downscope
 
 **Lessons Learned:** The most valuable low-scope shell cleanup here was turning the test suite from a placeholder into a truth-check for manifest + metadata drift; that gives QA/audit a concrete guardrail instead of relying on README prose alone.
 
