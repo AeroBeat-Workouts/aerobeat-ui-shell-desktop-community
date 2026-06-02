@@ -1,19 +1,21 @@
 {
   "$schema": "https://chickensoft.games/schemas/addons.schema.json",
   "addons": {
-    // Desktop shell runtime dependency: shared UI logic contract.
     "aerobeat-ui-core": {
-      "url": "git@github.com:AeroBeat-Workouts/aerobeat-ui-core.git",
-      "checkout": "v0.1.1",
-      "subfolder": "/"
+      "url": "../../aerobeat-ui-core",
+      "subfolder": "/",
+      "source": "symlink"
     },
-    // Desktop shell runtime dependency: pinned community visual layer.
     "aerobeat-ui-kit-community": {
-      "url": "git@github.com:AeroBeat-Workouts/aerobeat-ui-kit-community.git",
-      "checkout": "v0.1.1",
-      "subfolder": "/"
+      "url": "../../aerobeat-ui-kit-community",
+      "subfolder": "/",
+      "source": "symlink"
     },
-    // GUT drives the repo-local metadata/manifest tests in the hidden workbench.
+    "aerobeat-tool-headless-manager": {
+      "url": "../../aerobeat-tool-headless-manager",
+      "subfolder": "/",
+      "source": "symlink"
+    },
     "gut": {
       "url": "git@github.com:bitwes/Gut.git",
       "checkout": "main",
