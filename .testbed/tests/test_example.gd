@@ -40,5 +40,5 @@ func test_testbed_manifest_matches_shell_dependency_contract() -> void:
 	assert_typeof(addons, TYPE_DICTIONARY, "Manifest should define an addons dictionary")
 	assert_true(addons.has("aerobeat-ui-core"), "Desktop shell manifest should include aerobeat-ui-core")
 	assert_true(addons.has("aerobeat-ui-kit-community"), "Desktop shell manifest should include aerobeat-ui-kit-community")
-	assert_true(addons.has("gut"), "Desktop shell manifest should include gut for repo-local tests")
+	assert_true(addons.has("aerobeat-vendor-godot-unit-test"), "Desktop shell manifest should include gut for repo-local tests")
 	assert_false(addons.has("aerobeat-core"), "Legacy aerobeat-core should not remain in the desktop shell manifest")
