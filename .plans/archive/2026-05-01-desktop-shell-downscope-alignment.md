@@ -64,6 +64,9 @@ The audit found transition-era dependency drift in the committed `.testbed/addon
 - Renamed the hidden workbench in `.testbed/project.godot` to `AeroBeat Desktop Community Shell Testbed` for clearer desktop-shell identity during validation.
 - Replaced the placeholder GUT sanity tests with repo-truth assertions that load `plugin.cfg`, verify the PC-first/camera/Boxing+Flow metadata, parse the JSONC manifest, and assert that `aerobeat-core` is absent while the shell dependencies remain present.
 - No follow-up bead was required from this repo-local pass; the remaining gap in `REF-06` is an expected docs stub outside this repo's ownership.
+- QA re-verified the shipped repo surfaces end-to-end on 2026-05-01: `README.md`, `plugin.cfg`, `.testbed/addons.jsonc`, `.testbed/project.godot`, and `.testbed/tests/test_example.gd` all align with `REF-04`/`REF-05`; the committed manifest contains no `aerobeat-core` entry.
+- Independent QA validation reran `godotenv addons install`, `godot --headless --path .testbed --import`, and the GUT suite; all commands passed. Godot regenerated an untracked `.testbed/tests/test_example.gd.uid` sidecar during import, and QA removed it so the repo returned to a clean working tree.
+- Auditor truth-check on 2026-05-01 independently diffed commit `e18cf13`, re-read `REF-04`/`REF-05`, reran the same validation commands, and confirmed the repo still matches the locked PC-first camera-only Boxing/Flow scope. The `.uid` sidecar reappeared during audit import and was removed again; this is transient editor/import output, not a shipped repo-surface gap.
 
 ---
 
@@ -79,10 +82,11 @@ The audit found transition-era dependency drift in the committed `.testbed/addon
 - `REF-06` acknowledged: docs page remains a stub, but no repo-local contradiction remains after this pass.
 
 **Validation:**
-- `cd .testbed && godotenv addons install`
-- `godot --headless --path .testbed --import`
-- `godot --headless --path .testbed --script addons/gut/gut_cmdln.gd -gdir=res://tests -ginclude_subdirs -gexit`
-- Result: 2/2 GUT tests passed.
+- QA reran: `cd .testbed && godotenv addons install`
+- QA reran: `godot --headless --path .testbed --import`
+- QA reran: `godot --headless --path .testbed --script addons/gut/gut_cmdln.gd -gdir=res://tests -ginclude_subdirs -gexit`
+- Auditor reran the same three commands on 2026-05-01 with the same result.
+- Result: 2/2 GUT tests passed in both independent verification passes.
 
 **Commits:**
 - `e18cf13` - Align desktop shell with AeroBeat v1 downscope
